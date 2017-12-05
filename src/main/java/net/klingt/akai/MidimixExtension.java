@@ -9,7 +9,6 @@ import com.bitwig.extension.controller.api.TrackBank;
 
 import java.util.stream.IntStream;
 
-import static com.bitwig.extension.api.util.midi.ShortMidiMessage.NOTE_ON;
 import static java.lang.String.format;
 import static net.klingt.akai.MidiMix.BANK_LEFT;
 import static net.klingt.akai.MidiMix.BANK_RIGHT;
@@ -79,19 +78,7 @@ public class MidimixExtension extends ControllerExtension {
 
     @Override
     public void exit() {
-        clearLights();
-    }
-
-    private void clearLights() {
-        Arrays.stream(MUTE).forEach(this::clearLight);
-        Arrays.stream(REC_ARM).forEach(this::clearLight);
-        Arrays.stream(SOLO).forEach(this::clearLight);
-        clearLight(BANK_LEFT);
-        clearLight(BANK_RIGHT);
-    }
-
-    private void clearLight(int note) {
-        midiOut.sendMidi(NOTE_ON, note, 0);
+        getHost().showPopupNotification("Midimix Exited");
     }
 
     @Override
