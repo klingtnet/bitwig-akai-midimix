@@ -7,12 +7,18 @@ import com.bitwig.extension.controller.api.MidiOut;
 import com.bitwig.extension.controller.api.Track;
 import com.bitwig.extension.controller.api.TrackBank;
 
-import java.util.Arrays;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static com.bitwig.extension.api.util.midi.ShortMidiMessage.NOTE_ON;
-import static net.klingt.akai.MidiMix.*;
+import static java.lang.String.format;
+import static net.klingt.akai.MidiMix.BANK_LEFT;
+import static net.klingt.akai.MidiMix.BANK_RIGHT;
+import static net.klingt.akai.MidiMix.MUTE;
+import static net.klingt.akai.MidiMix.REC_ARM;
+import static net.klingt.akai.MidiMix.SOLO;
+import static net.klingt.akai.MidiMix.valueOfIndex;
+import static net.klingt.akai.MidimixExtensionDefinition.MODEL;
+import static net.klingt.akai.MidimixExtensionDefinition.VENDOR;
 
 public class MidimixExtension extends ControllerExtension {
 
