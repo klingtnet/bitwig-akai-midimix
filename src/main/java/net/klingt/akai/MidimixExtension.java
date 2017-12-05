@@ -16,7 +16,9 @@ import static net.klingt.akai.MidiMix.*;
 
 public class MidimixExtension extends ControllerExtension {
 
+    private static int NUM_TRACKS = 8;
     private MidiOut midiOut;
+    private ControllerHost host;
 
     protected MidimixExtension(final MidimixExtensionDefinition definition, final ControllerHost host) {
         super(definition, host);
@@ -24,11 +26,12 @@ public class MidimixExtension extends ControllerExtension {
 
     @Override
     public void init() {
-        final ControllerHost host = getHost();
+        host = getHost();
         this.midiOut = host.getMidiOutPort(0);
         TrackBank trackBank = host.getProject()
                 .getShownTopLevelTrackGroup()
-                .createTrackBank(8, 0, 0, false);
+                .createTrackBank(NUM_TRACKS, 0, 0, false);
+        registerTrackBankPopup(trackBank);
         CursorRemoteControlsPage cursorRemoteControlsPage = host.createCursorTrack(0, 0).createCursorDevice().createCursorRemoteControlsPage(8);
 
         MidiHandler midiHandler = new MidiHandler(host.createTransport(),
@@ -42,6 +45,15 @@ public class MidimixExtension extends ControllerExtension {
         registerObservers(trackBank);
 
         host.showPopupNotification("Midimix Initialized");
+    }
+
+    private void registerTrackBankPopup(TrackBank trackBank) {
+        trackBank.scrollPosition().addValueObserver(this::showTrackBankPopup, 0);
+    }
+
+    private void showTrackBankPopup(int numberOfFirstTrack) {
+        String msg = format("%s-%s: tracks %d-%d", VENDOR, MODEL, numberOfFirstTrack, numberOfFirstTrack + NUM_TRACKS);
+        host.showPopupNotification(msg);
     }
 
     private void registerObservers(TrackBank trackBank) {

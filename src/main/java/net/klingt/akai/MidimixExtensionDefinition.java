@@ -11,13 +11,15 @@ import static java.lang.String.format;
 
 public class MidimixExtensionDefinition extends ControllerExtensionDefinition {
     private static final UUID DRIVER_ID = UUID.fromString("9c561b6b-31bf-401c-aa86-a4a576a13f95");
+    static final String MODEL = "Midimix";
+    static final String VENDOR = "Akai";
 
     public MidimixExtensionDefinition() {
     }
 
     @Override
     public String getName() {
-        return "Midimix";
+        return MODEL;
     }
 
     @Override
@@ -37,7 +39,7 @@ public class MidimixExtensionDefinition extends ControllerExtensionDefinition {
 
     @Override
     public String getHardwareVendor() {
-        return "Akai";
+        return VENDOR;
     }
 
     @Override
