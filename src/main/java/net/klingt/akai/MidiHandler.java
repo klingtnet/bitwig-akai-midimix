@@ -19,7 +19,6 @@ public class MidiHandler implements ShortMidiDataReceivedCallback {
     private final Map<Integer, Consumer<ShortMidiMessage>> noteHandlers;
     private final Map<Integer, Consumer<ShortMidiMessage>> ccHandlers;
     private final CursorRemoteControlsPage cursorRemoteControlsPage;
-    private boolean soloMode;
 
     MidiHandler(Transport transport, MasterTrack masterTrack, TrackBank trackBank, CursorRemoteControlsPage cursorRemoteControlsPage) {
         this.transport = transport;
@@ -78,7 +77,6 @@ public class MidiHandler implements ShortMidiDataReceivedCallback {
         }
 
         Map<Integer, Consumer<ShortMidiMessage>> noteHandlers = new HashMap<>();
-        noteHandlers.put(SOLO_MODE, this::handleSoloMode);
         noteHandlers.put(BANK_LEFT, this::handleBankLeftRight);
         noteHandlers.put(BANK_RIGHT, this::handleBankLeftRight);
         Arrays.stream(REC_ARM).forEach(key -> noteHandlers.put(key, this::handleArm));
@@ -124,10 +122,6 @@ public class MidiHandler implements ShortMidiDataReceivedCallback {
         }
 
         noteHandlers.get(msg.getData1()).accept(msg);
-    }
-
-    private void handleSoloMode(ShortMidiMessage msg) {
-        soloMode = msg.isNoteOn();
     }
 
     private void handleBankLeftRight(ShortMidiMessage msg) {
